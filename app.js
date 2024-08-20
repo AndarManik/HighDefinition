@@ -150,7 +150,7 @@ function generatePage(term, definition) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <title>Word Dictionary</title>
+    <title>High Definition</title>
     <style>
         * {
             margin: 0;
@@ -202,7 +202,7 @@ function generatePage(term, definition) {
         }
     </style>
 </head>
-<body style="">
+<body>
     <div id="text">
         <div>
             <h1>${wordsInTerm}<h1> 
