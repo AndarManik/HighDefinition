@@ -10,6 +10,12 @@ const openai = new OpenAI({
 const dMap = new Map();
 const cMap = new Map();
 
+(async () => dMap.set("High Definition", (await defineTerm("High Definition"))))();
+
+app.get("/", async (req, res) => {
+  res.redirect('/d/High%20Definition');
+});
+
 app.get("/d/:word", async (req, res) => {
   const word =
     req.params.word.charAt(0).toUpperCase() + req.params.word.slice(1);
