@@ -10,10 +10,10 @@ const openai = new OpenAI({
 const dMap = new Map();
 const cMap = new Map();
 
-(async () => dMap.set("High Definition", (await defineTerm("High Definition"))))();
+(async () => dMap.set("High definition", (await defineTerm("High definition"))))();
 
 app.get("/", async (req, res) => {
-  res.redirect('/d/High%20Definition');
+  res.redirect('/d/High%20definition');
 });
 
 app.get("/d/:word", async (req, res) => {
@@ -34,8 +34,8 @@ app.get("/c/:definition", async (req, res) => {
     const data = cMap.get(previousDefinition);
     res.send(generatePage(data[0], data[1]));
   } else {
-    const word = await getTermFromClick(req.params.definition);
-    const definition = await defineTermWithContext(word, req.params.definition);
+    const word = await getTermFromClick(previousDefinition);
+    const definition = await defineTermWithContext(word, previousDefinition);
     cMap.set(previousDefinition, [word, definition]);
     res.send(generatePage(word, definition));
   }
@@ -102,9 +102,7 @@ async function defineTerm(term) {
     ],
     temperature: 0,
   });
-  return completion.choices[0].message.content
-    .replace(/\[/g, "(")
-    .replace(/\]/g, ")");
+  return completion.choices[0].message.content.replace(/[\[\]]/g, '');
 }
 
 async function defineTermWithContext(term, context) {
@@ -122,9 +120,7 @@ async function defineTermWithContext(term, context) {
     ],
     temperature: 0,
   });
-  return completion.choices[0].message.content
-    .replace(/\[/g, "(")
-    .replace(/\]/g, ")");
+  return completion.choices[0].message.content.replace(/[\[\]]/g, '');
 }
 
 function generatePage(term, definition) {
