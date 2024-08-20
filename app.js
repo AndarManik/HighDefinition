@@ -28,14 +28,14 @@ app.get("/c/:definition", async (req, res) => {
     const data = cMap.get(previousDefinition);
     res.send(generatePage(data[0], data[1]));
   } else {
-    const word = await getObjectFromClick(req.params.definition);
+    const word = await getTermFromClick(req.params.definition);
     const definition = await defineTermWithContext(word, req.params.definition);
     cMap.set(previousDefinition, [word, definition]);
     res.send(generatePage(word, definition));
   }
 });
 
-async function getObjectFromClick(clickDefinition) {
+async function getTermFromClick(clickDefinition) {
   const completion = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
