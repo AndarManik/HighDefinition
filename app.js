@@ -19,7 +19,8 @@ app.get("/", async (req, res) => {
 
 app.get("/d/:word", async (req, res) => {
   const word =
-    req.params.word.charAt(0).toUpperCase() + req.params.word.slice(1);
+    req.params.word.charAt(0).toUpperCase() +
+    req.params.word.slice(1).toLowerCase();
   if (dMap.has(word)) {
     res.send(generatePage(word, dMap.get(word)));
   } else {
@@ -79,7 +80,7 @@ Delicate`,
         content: clickDefinition,
       },
     ],
-    temperature: 0,
+
   });
   return (
     completion.choices[0].message.content.charAt(0).toUpperCase() +
@@ -101,8 +102,8 @@ async function defineTerm(term) {
         content: term,
       },
     ],
-    temperature: 0,
-  });
+
+    });
   return completion.choices[0].message.content.replace(/[\[\]]/g, "");
 }
 
@@ -112,14 +113,21 @@ async function defineTermWithContext(term, context) {
     messages: [
       {
         role: "system",
-        content: `You will be provided with a term and a usage of that term. What you will provide is a formal definition for this term. The definition should not be about the usage but rather be useful to understand the usage. Provide up to 100 words. Only output the definition, do not use the term in your definition, and do not reference the usage of the term. A formal definition consists of 1. The class of object or concept to which the term belongs and 2. The differentiating characteristics that distinguish it from all others of its class.`,
+        content: `Context:
+The definition you provide will be used in an interactive dictionary website. When a user clicks on a word, the website will route the user to the definition of the term and will automatically display a relevant definition to the context.
+
+Task:
+You will be provided with a term and a context which uses said term. What you will provide is a formal definition for this term. If there are many different definitions for a term provide the one which corresponds to the context. Provide up to 100 words. Only output the definition to the term, do not use the term in your definition, and do not mention the usage of the term in your definition. 
+A formal definition consists of:
+1. The class of object or concept to which the term belongs 
+2. The differentiating characteristics that distinguish it from all others of its class.`,
       },
       {
         role: "user",
-        content: `Term: "${term}"\nUsage: ${context}`,
+        content: `Term: "${term}"\nContext: ${context}`,
       },
     ],
-    temperature: 0,
+
   });
   return completion.choices[0].message.content.replace(/[\[\]]/g, "");
 }
@@ -158,25 +166,46 @@ function generatePage(term, definition) {
         * {
             margin: 0;
             padding: 0;
-        }
-
-        html, body {
-            height: 100%;
             background: #fcfcfd;
             font-family: "Inter", sans-serif;
             font-weight: 400;
             word-spacing: 0.125rem;
         }
 
-        body {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
+        html, body {
+            height: 100svh;
+        }
+
+        form {
+          border-bottom: 1px solid #101216;
+          margin-left: 12.5svw;
+          margin-right: 12.5svw;
+          margin-top: 1.25rem;
+        }
+
+        input {
+          padding: 0.25rem;
+          padding-left: 0;
+          outline: none;
+          border: none;
+          font-size: 1.25rem;
+        }
+
+        input:focus {
+          outline: none;
+          border: none;
+        }
+        
+        input[type="submit"]:hover {
+          text-decoration: underline;
+          color: #1d5bea;
         }
 
         #text {
             max-width: 600px;
-            margin: 12.5svw;
+            margin-left: 12.5svw;
+            margin-right: 12.5svw;
+            margin-top: 2.5rem;
         }
 
         #def {
@@ -211,6 +240,10 @@ function generatePage(term, definition) {
     </style>
 </head>
 <body>
+    <form action="/d/" method="get" onsubmit="if (this.q.value) { location.href = this.action + encodeURIComponent(this.q.value); }  return false;">
+        <input type="submit" value="Define:">
+        <input type="text" name="q" placeholder="" autofocus>
+    </form>
     <div id="text">
         <div>
             <h1>${wordsInTerm}<h1> 
