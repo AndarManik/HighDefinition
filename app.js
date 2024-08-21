@@ -10,10 +10,11 @@ const openai = new OpenAI({
 const dMap = new Map();
 const cMap = new Map();
 
-(async () => dMap.set("High definition", (await defineTerm("High definition"))))();
+(async () =>
+  dMap.set("High definition", await defineTerm("High definition")))();
 
 app.get("/", async (req, res) => {
-  res.redirect('/d/High%20definition');
+  res.redirect("/d/High%20definition");
 });
 
 app.get("/d/:word", async (req, res) => {
@@ -102,7 +103,7 @@ async function defineTerm(term) {
     ],
     temperature: 0,
   });
-  return completion.choices[0].message.content.replace(/[\[\]]/g, '');
+  return completion.choices[0].message.content.replace(/[\[\]]/g, "");
 }
 
 async function defineTermWithContext(term, context) {
@@ -120,7 +121,7 @@ async function defineTermWithContext(term, context) {
     ],
     temperature: 0,
   });
-  return completion.choices[0].message.content.replace(/[\[\]]/g, '');
+  return completion.choices[0].message.content.replace(/[\[\]]/g, "");
 }
 
 function generatePage(term, definition) {
@@ -163,9 +164,8 @@ function generatePage(term, definition) {
             height: 100%;
             background: #fcfcfd;
             font-family: "Inter", sans-serif;
-            font-optical-sizing: auto;
             font-weight: 400;
-            font-style: normal;
+            word-spacing: 0.125rem;
         }
 
         body {
@@ -180,9 +180,8 @@ function generatePage(term, definition) {
         }
 
         #def {
-            margin-top: 20px;
+            margin-top: 1.25rem;
             line-height: 1.33;
-            word-spacing: 2px;
         }
         
         h1, a {
@@ -190,7 +189,7 @@ function generatePage(term, definition) {
         }
 
         a {
-            font-size: 20px;
+            font-size: 1.25rem;
             text-decoration: none;
         }
 
@@ -200,8 +199,15 @@ function generatePage(term, definition) {
         }
 
         h1 > a {
-            font-size: 40px;
+            font-size: 2.5rem;
         }
+
+        @media only screen and (max-width: 600px) {
+        body {
+            word-spacing: 0rem;
+            letter-spacing: 0.075rem; /* Adjust as necessary */
+        }
+}
     </style>
 </head>
 <body>
