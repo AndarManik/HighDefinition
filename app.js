@@ -168,18 +168,18 @@ function generatePage(term, definition) {
             padding: 0;
             background: #fcfcfd;
             font-family: "Inter", sans-serif;
-            font-weight: 400;
             word-spacing: 0.125rem;
         }
-
-        html, body {
-            height: 100svh;
+        
+        body {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
         form {
           border-bottom: 1px solid #101216;
-          margin-left: 12.5svw;
-          margin-right: 12.5svw;
+          margin-bottom: 2.5rem;
           margin-top: 1.25rem;
         }
 
@@ -204,8 +204,7 @@ function generatePage(term, definition) {
         #text {
             max-width: 600px;
             margin-left: 12.5svw;
-            margin-right: 12.5svw;
-            margin-top: 2.5rem;
+            margin-right: 12.5svw;            
         }
 
         #def {
@@ -240,13 +239,13 @@ function generatePage(term, definition) {
     </style>
 </head>
 <body>
+    <div id="text">
     <form action="/d/" method="get" onsubmit="if (this.q.value) { location.href = this.action + encodeURIComponent(this.q.value); }  return false;">
         <input type="submit" value="Define:">
-        <input type="text" name="q" placeholder="" autofocus>
+        <input type="text" name="q" placeholder="">
     </form>
-    <div id="text">
         <div>
-            <h1>${wordsInTerm}<h1> 
+            <h1>${wordsInTerm}</h1> 
         </div>
         <div id="def">
             ${aTags}
